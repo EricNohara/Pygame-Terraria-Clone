@@ -62,11 +62,8 @@ class Player(pg.sprite.Sprite):
                 if block.rect.colliderect(self.rect):
                     if self.velocity.x > 0:     # right
                         self.rect.right = block.rect.left
-                        # self.rect.right = block.rect.right
                     if self.velocity.x < 0:     # left
                         self.rect.left = block.rect.right
-                        # self.rect.left = self.rect.left
-            pass
         elif direction == 'vertical':
             collisions = 0
             for block in self.block_group:
@@ -94,7 +91,9 @@ class Player(pg.sprite.Sprite):
                         self.inventory.add_item(block)
                         block.kill()
                 if EventHandler.clicked(3) and not collision:
-                    placed = True
+                    mouse_rect = pg.rect.Rect((mouse_pos[0]//TILESIZE)*TILESIZE, (mouse_pos[1]//TILESIZE)*TILESIZE, TILESIZE, TILESIZE)
+                    if not mouse_rect.colliderect(self.rect):
+                        placed = True
         if placed and not collision:
             self.inventory.use(self, self.get_block_pos(mouse_pos))
 

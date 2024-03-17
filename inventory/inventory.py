@@ -17,8 +17,9 @@ class Inventory:
 
 
     def debug(self):
-        for slot in self.slots:
-            print(slot)
+        # for slot in self.slots:
+        #     print(slot)
+        pass
 
     def use(self, player, position):
         """Do check if active item is an item (not empty slot) and if so, uses the item."""

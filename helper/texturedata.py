@@ -5,6 +5,15 @@ atlas_texture_data = {
     'stone': {'type': 'block', 'size': (TILESIZE, TILESIZE), 'position': (1,0)},
     'dirt': {'type': 'block', 'size': (TILESIZE, TILESIZE), 'position': (2,0)},
     'grassdirt': {'type': 'block', 'size': (TILESIZE, TILESIZE), 'position': (3,0)},
+    'cobblestone': {'type': 'block', 'size': (TILESIZE, TILESIZE), 'position': (0,1)},
+    'crackedstone': {'type': 'block', 'size': (TILESIZE, TILESIZE), 'position': (1,1)},
+    'copperore': {'type': 'block', 'size': (TILESIZE, TILESIZE), 'position': (0,2)},
+    'silverore': {'type': 'block', 'size': (TILESIZE, TILESIZE), 'position': (1,2)},
+    'coalore': {'type': 'block', 'size': (TILESIZE, TILESIZE), 'position': (2,2)},
+    'platinumore': {'type': 'block', 'size': (TILESIZE, TILESIZE), 'position': (2,3)},
+    'rubyore': {'type': 'block', 'size': (TILESIZE, TILESIZE), 'position': (3,3)},
+    'saphireore': {'type': 'block', 'size': (TILESIZE, TILESIZE), 'position': (0,10)},
+    'emeraldore': {'type': 'block', 'size': (TILESIZE, TILESIZE), 'position': (11,10)},
 }
 
 solo_texture_data = {

@@ -57,5 +57,15 @@ items: dict[str, ItemData] = {
     'stone': ItemData('stone', item_type=BlockItem),
     'dirt': ItemData('dirt', item_type=BlockItem),
     'grassdirt': ItemData('grassdirt', item_type=BlockItem),
-    'shortsword': ItemData('shortsword', item_type=ShortSwordItem)
+    'cobblestone': ItemData('cobblestone', item_type=BlockItem),
+    'crackedstone': ItemData('crackedstone', item_type=BlockItem),
+    'copperore': ItemData('copperore', item_type=BlockItem),
+    'silverore': ItemData('silverore', item_type=BlockItem),
+    'coalore': ItemData('coalore', item_type=BlockItem),
+    'platinumore': ItemData('platinumore', item_type=BlockItem),
+    'rubyore': ItemData('rubyore', item_type=BlockItem),
+    'saphireore': ItemData('saphireore', item_type=BlockItem),
+    'emeraldore': ItemData('emeraldore', item_type=BlockItem),
+
+    'shortsword': ItemData('shortsword', item_type=ShortSwordItem),
 }

@@ -1,4 +1,4 @@
-import pygame as pg
+import pygame as pg, random
 from helper.myconstants import *
 from helper.sprite import Entity, Mob
 from helper.player import Player
@@ -122,14 +122,14 @@ class Chunk:
                 height_val = height_map[x]
 
             for y in range(height_val):
-                y_offset = 5 - y + 6
+                self.generate_random_ore()
                 block_type = 'dirt'
                 if y == height_map[x] - 1:
                     block_type = 'grassdirt'
                 if y < height_map[x] - 5:
                     block_type = 'stone'
                 if self.position[1] > 0:
-                    block_type = 'stone'
+                    block_type = self.generate_random_ore()
 
                 use_type = items[block_type].use_type
                 groups = [self.group_list[group] for group in items[block_type].groups]
@@ -138,6 +138,30 @@ class Chunk:
                                             (x * TILESIZE + (CHUNKPIXELSIZE * self.position[0]),
                                              (CHUNKSIZE - y) * TILESIZE + (CHUNKPIXELSIZE * self.position[1])), 
                                              block_type))
+                
+    def generate_random_ore(self):
+        num = random.randint(1, 1000)
+        if num >= 765 and num < 865:
+            return 'cobblestone'
+        elif num >= 865 and num < 940:
+            return 'crackedstone'
+        elif num >= 940 and num < 960:
+            return 'copperore'
+        elif num >= 960 and num < 980:
+            return 'coalore'
+        elif num >= 980 and num < 987.5:
+            return 'silverore'
+        elif num >= 987.5 and num < 992.5:
+            return 'platinumore'
+        elif num >= 992.5 and num < 995:
+            return 'saphireore'
+        elif num >= 995 and num < 997.5:
+            return 'rubyore'
+        elif num >= 997.5 and num < 1000:
+            return 'emeraldore'
+        else:
+            return 'stone'
+            
                     
     def load_chunk(self):
         for block in self.blocks:
