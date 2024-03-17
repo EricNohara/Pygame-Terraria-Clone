@@ -11,6 +11,9 @@ class Item:
         """This is a default use class inherited by all sub item classes."""
         pass
 
+    def attack(self, *args, **kwargs):
+        pass
+
     def __str__(self):
         """This is a dunder method used for debugging inventory purposes."""
         return f'Name: {self.name}, Quantity: {self.quantity}'
@@ -30,6 +33,16 @@ class BlockItem(Item):
         else:
             self.name = 'default'
 
+class ShortSwordItem(Item):
+    def __init__(self, name: str = "default", quantity: int = 0) -> None:
+        super().__init__(name, quantity)
+    
+    def use(self, player, position):
+        print('Using short sword')
+
+    def attack(self, player, target):
+        target.kill()
+
 class ItemData():
     """Do create class to store item data."""
     def __init__(self, name: str, quantity: int = 1, groups: list[str] = ['sprites', 'block_group'], use_type: Entity = Entity, item_type: Item = Item) -> None:
@@ -43,5 +56,6 @@ items: dict[str, ItemData] = {
     'grass': ItemData('grass', item_type=BlockItem),
     'stone': ItemData('stone', item_type=BlockItem),
     'dirt': ItemData('dirt', item_type=BlockItem),
-    'grassdirt': ItemData('grassdirt', item_type=BlockItem)
+    'grassdirt': ItemData('grassdirt', item_type=BlockItem),
+    'shortsword': ItemData('shortsword', item_type=ShortSwordItem)
 }

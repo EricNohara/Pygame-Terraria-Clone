@@ -15,25 +15,36 @@ class Player(pg.sprite.Sprite):
         self.grounded = True
         # parameters
         self.group_list = parameters['group_list']
+        self.enemy_group = self.group_list['enemy_group']
         self.block_group = self.group_list['block_group']
         self.textures = parameters['textures']
-        self.solo_textures = parameters['solo_textures']       
         # inventory:
         self.inventory = parameters['inventory']
+        self.health = parameters['health']
 
     def input(self):
         keys = pg.key.get_pressed()
         if keys[pg.K_a]:
             self.velocity.x = -PLAYER_SPEED
-            self.image = self.solo_textures['player_static_left']
+            self.image = self.textures['player_static_left']
         if keys[pg.K_d]:
             self.velocity.x = PLAYER_SPEED
-            self.image = self.solo_textures['player_static_right']
+            self.image = self.textures['player_static_right']
         if not keys[pg.K_a] and not keys[pg.K_d]:
-            self.velocity.x = 0
+            if self.velocity.x > 0:
+                self.velocity.x -= FRICTION_CONSTANT
+            elif self.velocity.x < 0:
+                self.velocity.x += FRICTION_CONSTANT
+            if abs(self.velocity.x) < PLAYER_SPEED/2:
+                self.velocity.x = 0
 
         if self.grounded and EventHandler.keydown(pg.K_SPACE):
             self.velocity.y = -PLAYER_JUMP_POWER
+
+        if EventHandler.clicked(1):
+            for enemy in self.enemy_group:
+                if enemy.rect.collidepoint(self.transform_mouse_pos()):
+                    self.inventory.slots[self.inventory.active_slot].attack(self, enemy)
 
     def move(self):
         # handling gravity
@@ -101,3 +112,5 @@ class Player(pg.sprite.Sprite):
         self.input()
         self.move()
         self.block_handling()
+        if self.health <= 0:
+            self.kill()

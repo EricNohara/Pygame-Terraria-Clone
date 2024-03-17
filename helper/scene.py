@@ -11,21 +11,23 @@ class Scene:
     def __init__(self, app) -> None:
         """Do construct Scene with app as argument."""
         self.app = app
-        self.solo_textures = self.gen_solo_textures()
-        self.atlas_textures = self.gen_atlas_textures('assets/texture-atlas.png')
+        self.textures = self.gen_solo_textures()
+        self.textures.update(self.gen_atlas_textures('assets/texture-atlas.png'))
 
         self.sprites = Camera()
+        self.enemy_group = pg.sprite.Group()
         self.blocks = pg.sprite.Group()
         self.group_list: dict[str, pg.sprite.Group] = {
             'sprites': self.sprites,
-            'block_group': self.blocks
+            'block_group': self.blocks,
+            'enemy_group': self.enemy_group
         }
 
         # Inventory:
-        self.inventory = Inventory(self.app, self.atlas_textures)
+        self.inventory = Inventory(self.app, self.textures)
 
-        self.player = Player([self.sprites], self.solo_textures['player_static_right'], (600,300), {'group_list': self.group_list, 'textures': self.atlas_textures, 'solo_textures': self.solo_textures, 'inventory': self.inventory})
-        Mob([self.sprites], self.solo_textures['slime_static_right'], (800, -500), parameters={'block_group': self.blocks, 'player': self.player, 'solo_textures': self.solo_textures})
+        self.player = Player([self.sprites], self.textures['player_static_right'], (600,300), {'group_list': self.group_list, 'textures': self.textures, 'inventory': self.inventory, 'health': 5})
+        Mob([self.sprites, self.enemy_group], self.textures['slime_static_right'], (800, -500), parameters={'block_group': self.blocks, 'player': self.player, 'textures': self.textures, 'damage': 1})
 
         self.gen_world()
 
@@ -66,7 +68,7 @@ class Scene:
                     block_type = 'grassdirt'
                 if y < height_map[x] - 5:
                     block_type = 'stone'
-                Entity([self.sprites, self.blocks], self.atlas_textures[block_type], (x*TILESIZE, y_offset*TILESIZE), name = block_type)
+                Entity([self.sprites, self.blocks], self.textures[block_type], (x*TILESIZE, y_offset*TILESIZE), name = block_type)
 
     def update(self):
         self.sprites.update()

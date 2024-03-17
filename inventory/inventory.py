@@ -11,6 +11,7 @@ class Inventory:
         self.slots = []
         for _ in range(INVENTORY_SIZE):
             self.slots.append(Item())
+        self.slots[0] = ShortSwordItem('shortsword', 1)
         self.active_slot = 0
         self.font = pg.font.Font(None, 30)
 

@@ -19,7 +19,8 @@ class Mob(Entity):
         if parameters:
             self.block_group = parameters['block_group']
             self.player = parameters['player']
-            self.solo_textures = parameters['solo_textures']
+            self.textures = parameters['textures']
+            self.damage = parameters['damage']
 
         self.velocity = pg.math.Vector2()
         self.mass = 5
@@ -29,7 +30,10 @@ class Mob(Entity):
 
         # States:
         self.attacking = True
+        self.attacked = False
         self.grounded = False
+        self.attack_cooldown = 60
+        self.counter = self.attack_cooldown
 
     def move(self):         
         # handling gravity
@@ -42,10 +46,10 @@ class Mob(Entity):
             # handle moving to player
             if self.rect.x > self.player.rect.x:
                 self.velocity.x = -self.speed
-                self.image = self.solo_textures['slime_static_left']
+                self.image = self.textures['slime_static_left']
             elif self.rect.x < self.player.rect.x:
                 self.velocity.x = self.speed
-                self.image = self.solo_textures['slime_static_right']
+                self.image = self.textures['slime_static_right']
             self.attacking = True
         else:
             self.attacking = False
@@ -82,5 +86,22 @@ class Mob(Entity):
             else:
                 self.grounded = False
 
+    def check_player_collision(self):
+        if not self.attacked and self.attacking and self.rect.colliderect(self.player.rect):
+            self.player.health -= self.damage
+            self.attacked = True
+            self.counter = self.attack_cooldown
+            if self.player.rect.centerx > self.rect.centerx:
+                self.player.velocity.x = KNOCKBACK
+            elif self.player.rect.centerx < self.rect.centerx:
+                self.player.velocity.x = -KNOCKBACK
+
     def update(self):
         self.move()
+        self.check_player_collision()
+
+        if self.attacked:
+            self.counter -= 1
+            if self.counter < 0: 
+                self.counter = self.attack_cooldown
+                self.attacked = False
