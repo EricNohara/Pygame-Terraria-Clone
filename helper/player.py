@@ -13,6 +13,7 @@ class Player(pg.sprite.Sprite):
         self.mass = 5
         self.terminal_velocity = self.mass * TERMINAL_VELOCITY
         self.grounded = True
+        self.dashed = False
         # parameters
         self.group_list = parameters['group_list']
         self.enemy_group = self.group_list['enemy_group']
@@ -21,13 +22,18 @@ class Player(pg.sprite.Sprite):
         # inventory:
         self.inventory = parameters['inventory']
         self.health = parameters['health']
+        self.last_a_click = 0
+        self.last_d_click = 0
 
     def input(self):
+        # Check if there was a dash input
+        direction, self.last_a_click, self.last_d_click = EventHandler.double_clicked(self.last_a_click, self.last_d_click)
+
         keys = pg.key.get_pressed()
-        if keys[pg.K_a]:
+        if keys[pg.K_a] and not self.dashed:
             self.velocity.x = -PLAYER_SPEED
             self.image = self.textures['player_static_left']
-        if keys[pg.K_d]:
+        if keys[pg.K_d] and not self.dashed:
             self.velocity.x = PLAYER_SPEED
             self.image = self.textures['player_static_right']
         if not keys[pg.K_a] and not keys[pg.K_d]:
@@ -37,6 +43,15 @@ class Player(pg.sprite.Sprite):
                 self.velocity.x += FRICTION_CONSTANT
             if abs(self.velocity.x) < PLAYER_SPEED/2:
                 self.velocity.x = 0
+        elif self.dashed:
+            if self.velocity.x > 0:
+                self.velocity.x -= FRICTION_CONSTANT
+            elif self.velocity.x < 0:
+                self.velocity.x += FRICTION_CONSTANT
+            if abs(self.velocity.x) < PLAYER_SPEED/2:
+                self.velocity.x = 0
+            if abs(self.velocity.x) < PLAYER_SPEED:
+                self.dashed = False
 
         if self.grounded and EventHandler.keydown(pg.K_SPACE):
             self.velocity.y = -PLAYER_JUMP_POWER
@@ -46,6 +61,15 @@ class Player(pg.sprite.Sprite):
                 if enemy.rect.collidepoint(self.transform_mouse_pos()):
                     self.inventory.slots[self.inventory.active_slot].attack(self, enemy)
 
+        if direction != 'None' and not self.dashed:
+            self.dashed = True
+            if direction == 'left':
+                self.velocity.x = -PLAYER_DASH_SPEED
+                self.image = self.textures['player_static_left']
+            elif direction == 'right':
+                self.velocity.x = PLAYER_DASH_SPEED
+                self.image = self.textures['player_static_right']
+            
     def move(self):
         # handling gravity
         self.velocity.y += GRAVITY * self.mass

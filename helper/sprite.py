@@ -21,6 +21,7 @@ class Mob(Entity):
             self.player = parameters['player']
             self.textures = parameters['textures']
             self.damage = parameters['damage']
+            self.health = parameters['health']
 
         self.velocity = pg.math.Vector2()
         self.mass = 5
@@ -105,3 +106,5 @@ class Mob(Entity):
             if self.counter < 0: 
                 self.counter = self.attack_cooldown
                 self.attacked = False
+        if self.health <= 0:
+            self.kill()

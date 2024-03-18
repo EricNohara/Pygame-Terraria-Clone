@@ -27,8 +27,8 @@ class Scene:
         # Inventory:
         self.inventory = Inventory(self.app, self.textures)
 
-        self.player = Player([self.sprites], self.textures['player_static_right'], (0,0), {'group_list': self.group_list, 'textures': self.textures, 'inventory': self.inventory, 'health': 5})
-        Mob([self.sprites, self.enemy_group], self.textures['slime_static_right'], (800, -500), parameters={'block_group': self.blocks, 'player': self.player, 'textures': self.textures, 'damage': 1})
+        self.player = Player([self.sprites], self.textures['player_static_right'], (WIDTH / 2, HEIGHT / 2), {'group_list': self.group_list, 'textures': self.textures, 'inventory': self.inventory, 'health': 5})
+        Mob([self.sprites, self.enemy_group], self.textures['slime_static_right'], (800, -500), parameters={'block_group': self.blocks, 'player': self.player, 'textures': self.textures, 'damage': 1, 'health': 3})
 
         self.chunks: dict[tuple[int, int], Chunk] = {}
         self.active_chunks: dict[tuple[int, int], Chunk] = {}

@@ -34,14 +34,12 @@ class BlockItem(Item):
             self.name = 'default'
 
 class ShortSwordItem(Item):
-    def __init__(self, name: str = "default", quantity: int = 0) -> None:
+    def __init__(self, name: str = "default", quantity: int = 0, damage: int = 1) -> None:
         super().__init__(name, quantity)
-    
-    def use(self, player, position):
-        print('Using short sword')
+        self.damage = damage
 
     def attack(self, player, target):
-        target.kill()
+        target.health -= self.damage
 
 class ItemData():
     """Do create class to store item data."""
