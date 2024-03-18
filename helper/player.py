@@ -26,7 +26,6 @@ class Player(pg.sprite.Sprite):
         self.last_d_click = 0
 
     def input(self):
-        # Check if there was a dash input
         direction, self.last_a_click, self.last_d_click = EventHandler.double_clicked(self.last_a_click, self.last_d_click)
 
         keys = pg.key.get_pressed()

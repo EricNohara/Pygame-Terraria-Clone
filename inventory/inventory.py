@@ -40,14 +40,13 @@ class Inventory:
             self.slots[first_available_slot] = items[item.name].item_type(item.name, items[item.name].quantity)
 
     def update(self):
-        if EventHandler.keydown(pg.K_RIGHT):
+        scroll_direction = EventHandler.scrolled()
+        if EventHandler.keydown(pg.K_RIGHT) or scroll_direction == 'up':
             if self.active_slot < len(self.slots) - 1:
                 self.active_slot += 1
-        if EventHandler.keydown(pg.K_LEFT):
+        if EventHandler.keydown(pg.K_LEFT) or scroll_direction == 'down':
             if self.active_slot > 0:
                 self.active_slot -= 1
-        if EventHandler.clicked_any():
-            self.debug()
 
     def draw(self):
         pg.draw.rect(self.screen, 'grey', pg.Rect(0, 0, SLOTSIZE * len(self.slots), SLOTSIZE))

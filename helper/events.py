@@ -35,6 +35,15 @@ class EventHandler:
                 last_d_click = last_clicked
         return 'None', last_a_click, last_d_click
     
+    def scrolled():
+        for event in EventHandler.events:
+            if event.type == pg.MOUSEWHEEL:
+                if event.y == 1:
+                    return 'up'
+                elif event.y == -1:
+                    return 'down'
+        return 'None'
+    
     def clicked_any() -> bool:
         for event in EventHandler.events:
             if event.type == pg.MOUSEBUTTONDOWN:
