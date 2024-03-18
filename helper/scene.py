@@ -35,8 +35,6 @@ class Scene:
         self.chunks: dict[tuple[int, int], Chunk] = {}
         self.active_chunks: dict[tuple[int, int], Chunk] = {}
 
-        self.gen_world()
-
     def gen_solo_textures(self) -> dict:
         """
         Do generate dictionary of all solo_textures specified in texturedata.py file.
@@ -59,7 +57,7 @@ class Scene:
         return textures
 
     def gen_world(self):
-        pass
+        pass      
 
     def update(self):
         self.sprites.update()
@@ -83,7 +81,7 @@ class Scene:
                     self.chunks[position].load_chunk()
                     self.active_chunks[position] = self.chunks[position]
                 else:
-                    self.chunks[position] = Chunk(position, self.group_list, self.textures)
+                    self.chunks[position] = Chunk(position, self.group_list, self.textures, self.sprites)
                     self.active_chunks[position] = self.chunks[position]
         target = None
         for pos, chunk in self.active_chunks.items():
@@ -125,10 +123,11 @@ class Scene:
 
 
 class Chunk:
-    def __init__(self, position: tuple[int, int], group_list: dict[str, pg.sprite.Group], textures: dict[str, pg.Surface]):
+    def __init__(self, position: tuple[int, int], group_list: dict[str, pg.sprite.Group], textures: dict[str, pg.Surface], sprites):
         self.position = position
         self.group_list = group_list
         self.textures = textures
+        self.sprites = sprites
         self.blocks = []
         self.gen_chunk()
 
@@ -147,6 +146,16 @@ class Chunk:
                 height_val = 0
             else:
                 height_val = height_map[x]
+
+            # testing
+            if x % TREE_SCARCITY == 0:
+                for i in range(5):
+                    Entity([self.sprites], self.textures['wood'], (x * TILESIZE + (CHUNKPIXELSIZE * self.position[0]), (CHUNKSIZE-height_map[x])*TILESIZE - (TILESIZE*i)))
+                for i in range(5):
+                    for j in range(2):
+                        Entity([self.sprites], self.textures['leaf'], (x * TILESIZE + (CHUNKPIXELSIZE * self.position[0]) - i*TILESIZE + 2*TILESIZE, (CHUNKSIZE-height_map[x]-5)*TILESIZE - (TILESIZE*j)))
+                for i in range(3):
+                    Entity([self.sprites], self.textures['leaf'], (x * TILESIZE + (CHUNKPIXELSIZE * self.position[0]) - i*TILESIZE + TILESIZE, (CHUNKSIZE-height_map[x]-5)*TILESIZE - (TILESIZE*2)))
 
             for y in range(height_val):
                 self.generate_random_ore()

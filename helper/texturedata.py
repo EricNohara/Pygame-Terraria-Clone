@@ -14,6 +14,8 @@ atlas_texture_data = {
     'rubyore': {'type': 'block', 'size': (TILESIZE, TILESIZE), 'position': (3,3)},
     'saphireore': {'type': 'block', 'size': (TILESIZE, TILESIZE), 'position': (0,10)},
     'emeraldore': {'type': 'block', 'size': (TILESIZE, TILESIZE), 'position': (11,10)},
+    'wood': {'type': 'block', 'size': (TILESIZE, TILESIZE), 'position': (4,1)},
+    'leaf': {'type': 'block', 'size': (TILESIZE, TILESIZE), 'position': (4,3)}
 }
 
 solo_texture_data = {
