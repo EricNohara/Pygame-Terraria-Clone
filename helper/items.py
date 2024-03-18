@@ -64,6 +64,8 @@ items: dict[str, ItemData] = {
     'rubyore': ItemData('rubyore', item_type=BlockItem),
     'saphireore': ItemData('saphireore', item_type=BlockItem),
     'emeraldore': ItemData('emeraldore', item_type=BlockItem),
+    'wood': ItemData('wood', item_type=BlockItem),
+    'leaf': ItemData('leaf', item_type=BlockItem),
 
     'shortsword': ItemData('shortsword', item_type=ShortSwordItem),
 }

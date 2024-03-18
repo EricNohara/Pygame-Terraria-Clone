@@ -150,12 +150,34 @@ class Chunk:
             # testing
             if x % TREE_SCARCITY == 0:
                 for i in range(5):
-                    Entity([self.sprites], self.textures['wood'], (x * TILESIZE + (CHUNKPIXELSIZE * self.position[0]), (CHUNKSIZE-height_map[x])*TILESIZE - (TILESIZE*i)))
+                    block_type = 'wood'
+                    use_type = items[block_type].use_type
+                    groups = [self.group_list[group] for group in items[block_type].groups]
+                    self.blocks.append(use_type(groups, 
+                                                self.textures[block_type], 
+                                                (x * TILESIZE + (CHUNKPIXELSIZE * self.position[0]),
+                                                (CHUNKSIZE-height_map[x])*TILESIZE - (TILESIZE*i)), 
+                                                block_type))
                 for i in range(5):
                     for j in range(2):
-                        Entity([self.sprites], self.textures['leaf'], (x * TILESIZE + (CHUNKPIXELSIZE * self.position[0]) - i*TILESIZE + 2*TILESIZE, (CHUNKSIZE-height_map[x]-5)*TILESIZE - (TILESIZE*j)))
+                        block_type = 'leaf'
+                        use_type = items[block_type].use_type
+                        groups = [self.group_list[group] for group in items[block_type].groups]
+                        self.blocks.append(use_type(groups, 
+                                                self.textures[block_type], 
+                                                (x * TILESIZE + (CHUNKPIXELSIZE * self.position[0]) - i*TILESIZE + 2*TILESIZE,
+                                                (CHUNKSIZE-height_map[x]-5)*TILESIZE - (TILESIZE*j)), 
+                                                block_type))
+                        
                 for i in range(3):
-                    Entity([self.sprites], self.textures['leaf'], (x * TILESIZE + (CHUNKPIXELSIZE * self.position[0]) - i*TILESIZE + TILESIZE, (CHUNKSIZE-height_map[x]-5)*TILESIZE - (TILESIZE*2)))
+                    block_type = 'leaf'
+                    use_type = items[block_type].use_type
+                    groups = [self.group_list[group] for group in items[block_type].groups]
+                    self.blocks.append(use_type(groups, 
+                                                self.textures[block_type], 
+                                                (x * TILESIZE + (CHUNKPIXELSIZE * self.position[0]) - i*TILESIZE + TILESIZE,
+                                                (CHUNKSIZE-height_map[x]-5)*TILESIZE - (TILESIZE*2)), 
+                                                block_type))
 
             for y in range(height_val):
                 self.generate_random_ore()
