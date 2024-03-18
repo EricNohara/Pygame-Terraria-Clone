@@ -20,10 +20,12 @@ class Scene:
         self.sprites = Camera()
         self.enemy_group = pg.sprite.Group()
         self.blocks = pg.sprite.Group()
+        self.walls = pg.sprite.Group()
         self.group_list: dict[str, pg.sprite.Group] = {
             'sprites': self.sprites,
             'block_group': self.blocks,
             'enemy_group': self.enemy_group,
+            'wall_group': self.walls
         }
 
         # Inventory:
@@ -60,8 +62,6 @@ class Scene:
         pass      
 
     def update(self):
-        self.sprites.update()
-        self.inventory.update()
         player_chunk_pos = Chunk.get_chunk_pos(self.player.rect.center)
         positions = [player_chunk_pos, 
                      (player_chunk_pos[0] - 1, player_chunk_pos[1]),
@@ -90,6 +90,9 @@ class Scene:
         if target != None:
             self.active_chunks[target].unload_chunk()
             self.active_chunks.pop(target)
+
+        self.sprites.update()
+        self.inventory.update()
 
         if self.player not in self.sprites:
             self.reset_screen()
@@ -153,11 +156,9 @@ class Chunk:
                     block_type = 'wood'
                     use_type = items[block_type].use_type
                     groups = [self.group_list[group] for group in items[block_type].groups]
-                    self.blocks.append(use_type(groups, 
-                                                self.textures[block_type], 
-                                                (x * TILESIZE + (CHUNKPIXELSIZE * self.position[0]),
-                                                (CHUNKSIZE-height_map[x])*TILESIZE - (TILESIZE*i)), 
-                                                block_type))
+                    wood_block = use_type(groups, self.textures[block_type], (x * TILESIZE + (CHUNKPIXELSIZE * self.position[0]), (CHUNKSIZE-height_map[x])*TILESIZE - (TILESIZE*i)), block_type)
+                    self.blocks.append(wood_block)
+
                 for i in range(5):
                     for j in range(2):
                         block_type = 'leaf'

@@ -3,6 +3,7 @@ from helper.myconstants import *
 from helper.events import EventHandler
 from helper.texturedata import *
 from helper.sprite import Entity
+from itertools import chain
 
 class Player(pg.sprite.Sprite):
     def __init__(self, groups, image: pg.Surface, pos: tuple, parameters: dict):
@@ -19,11 +20,13 @@ class Player(pg.sprite.Sprite):
         self.enemy_group = self.group_list['enemy_group']
         self.block_group = self.group_list['block_group']
         self.textures = parameters['textures']
+        self.wall_group = self.group_list['wall_group']
         # inventory:
         self.inventory = parameters['inventory']
         self.health = parameters['health']
         self.last_a_click = 0
         self.last_d_click = 0
+        self.num_jumps = 0
 
     def input(self):
         direction, self.last_a_click, self.last_d_click = EventHandler.double_clicked(self.last_a_click, self.last_d_click)
@@ -52,7 +55,10 @@ class Player(pg.sprite.Sprite):
             if abs(self.velocity.x) < PLAYER_SPEED:
                 self.dashed = False
 
-        if self.grounded and EventHandler.keydown(pg.K_SPACE):
+        if not DOUBLE_JUMP and self.grounded and EventHandler.keydown(pg.K_SPACE):
+            self.velocity.y = -PLAYER_JUMP_POWER
+        elif DOUBLE_JUMP and self.num_jumps < 2 and EventHandler.keydown(pg.K_SPACE):
+            self.num_jumps += 1
             self.velocity.y = -PLAYER_JUMP_POWER
 
         if EventHandler.clicked(1):
@@ -98,6 +104,7 @@ class Player(pg.sprite.Sprite):
                         self.rect.top = block.rect.bottom
             if collisions > 0:
                 self.grounded = True
+                self.num_jumps = 0
             else:
                 self.grounded = False
 
@@ -107,7 +114,7 @@ class Player(pg.sprite.Sprite):
         mouse_pos = self.transform_mouse_pos()
 
         if EventHandler.clicked_any():
-            for block in self.block_group:
+            for block in chain(self.block_group, self.wall_group):
                 if block.rect.collidepoint(mouse_pos):
                     collision = True
                     if EventHandler.clicked(1): # breaking the block
