@@ -6,7 +6,6 @@ from helper.events import EventHandler
 class Game:
     def __init__(self):
         pg.init()
-        # pg.mouse.set_visible(False)
         self.screen = pg.display.set_mode(SIZE)
         self.clock = pg.time.Clock()
         self.running = True

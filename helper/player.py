@@ -10,7 +10,7 @@ class Player(pg.sprite.Sprite):
         self.image = image
         self.rect = self.image.get_rect(topleft = pos)
         self.velocity = pg.math.Vector2()
-        self.mass = 5
+        self.mass = DEFAULT_MASS
         self.terminal_velocity = self.mass * TERMINAL_VELOCITY
         self.grounded = True
         self.dashed = False

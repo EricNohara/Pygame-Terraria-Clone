@@ -7,6 +7,8 @@ from helper.camera import Camera
 from opensimplex import OpenSimplex
 from inventory.inventory import Inventory
 from helper.items import *
+from helper.button import Button
+from helper.events import EventHandler
 
 class Scene:
     def __init__(self, app) -> None:
@@ -21,7 +23,7 @@ class Scene:
         self.group_list: dict[str, pg.sprite.Group] = {
             'sprites': self.sprites,
             'block_group': self.blocks,
-            'enemy_group': self.enemy_group
+            'enemy_group': self.enemy_group,
         }
 
         # Inventory:
@@ -90,6 +92,31 @@ class Scene:
         if target != None:
             self.active_chunks[target].unload_chunk()
             self.active_chunks.pop(target)
+
+        if self.player not in self.sprites:
+            self.reset_screen()
+
+    def reset_screen(self):
+        mouse_pos = pg.mouse.get_pos()
+        game_over_screen = pg.Surface((WIDTH, HEIGHT))
+        game_over_screen.fill('black')
+        game_over_screen.set_alpha(180)
+        self.app.screen.blit(game_over_screen, (0,0))
+
+        respawn_button = pg.Surface(RESPAWN_BTN)
+        respawn_button.fill('grey')
+        respawn_btn = Button(image=respawn_button, pos=(WIDTH/2, HEIGHT/2), text_input="Respawn", font=HEADER_FONT, base_color="black", hovering_color="white")       
+        respawn_btn.changeColor(mouse_pos)
+        respawn_btn.update(self.app.screen)
+
+        if EventHandler.clicked():
+            if respawn_btn.checkForInput(mouse_pos):
+                self.reset()
+
+    def reset(self):
+        self.player = Player([self.sprites], self.textures['player_static_right'], (WIDTH / 2, HEIGHT / 2), {'group_list': self.group_list, 'textures': self.textures, 'inventory': self.inventory, 'health': 5})
+        for enemy in self.enemy_group:
+            enemy.kill()
 
     def draw(self):
         self.app.screen.fill("lightblue")

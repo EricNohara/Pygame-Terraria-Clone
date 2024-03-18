@@ -7,6 +7,9 @@ SIZE = (WIDTH, HEIGHT) = (1280, 720)
 FPS = 60
 TILESIZE = 32
 SLOTSIZE = TILESIZE * 2
+RESPAWN_BTN = (350, 125)
+FONT = pg.font.Font('assets/fonts/pixel.ttf', 20)
+HEADER_FONT = pg.font.Font('assets/fonts/pixel.ttf', 50)
 
 # Physics Constants
 GRAVITY = 0.1
@@ -15,6 +18,7 @@ KNOCKBACK = 7
 FRICTION_CONSTANT = 0.2
 
 # Player Stat Constants
+DEFAULT_MASS = 5
 PLAYER_SPEED = 5
 PLAYER_DASH_SPEED = 15
 PLAYER_JUMP_POWER = 10

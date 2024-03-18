@@ -24,9 +24,9 @@ class Mob(Entity):
             self.health = parameters['health']
 
         self.velocity = pg.math.Vector2()
-        self.mass = 5
+        self.mass = DEFAULT_MASS
         self.speed = 2
-        self.jump_power = 10
+        self.jump_power = PLAYER_JUMP_POWER
         self.terminal_velocity = TERMINAL_VELOCITY * self.mass
 
         # States:
