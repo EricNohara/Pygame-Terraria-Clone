@@ -44,6 +44,12 @@ class EventHandler:
                     return 'down'
         return 'None'
     
+    def num_keydown():
+        for event in EventHandler.events:
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_0 or event.key == pg.K_1 or event.key == pg.K_2 or event.key == pg.K_3 or event.key == pg.K_4 or event.key == pg.K_5 or event.key == pg.K_6 or event.key == pg.K_7 or event.key == pg.K_8 or event.key == pg.K_9:
+                    return event.key
+    
     def clicked_any() -> bool:
         for event in EventHandler.events:
             if event.type == pg.MOUSEBUTTONDOWN:

@@ -73,7 +73,7 @@ class Player(pg.sprite.Sprite):
                 self.image = self.textures['player_static_left']
             elif direction == 'right':
                 self.velocity.x = PLAYER_DASH_SPEED
-                self.image = self.textures['player_static_right']
+                self.image = self.textures['player_static_right']            
             
     def move(self):
         # handling gravity

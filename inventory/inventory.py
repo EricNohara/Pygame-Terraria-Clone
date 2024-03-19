@@ -48,6 +48,13 @@ class Inventory:
             if self.active_slot > 0:
                 self.active_slot -= 1
 
+        if EventHandler.num_keydown() != None:
+            slot = int(pg.key.name(EventHandler.num_keydown())) - 1
+            if slot == -1:
+                self.active_slot = 9
+            else:
+                self.active_slot = slot
+
     def draw(self):
         pg.draw.rect(self.screen, 'grey', pg.Rect(0, 0, SLOTSIZE * len(self.slots), SLOTSIZE))
         x_offset = TILESIZE / 2
